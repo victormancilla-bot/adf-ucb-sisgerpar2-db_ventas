@@ -1,0 +1,80 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "clientes_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "clientes_sql",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id_cliente as integer,",
+				"          {ci-nit} as integer,",
+				"          nombre as string,",
+				"          {fecha-nac} as string,",
+				"          genero as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive({fecha-nac} = iif(\r",
+				"    not(isNull(toDate({fecha-nac}, 'yyyy-MM-dd'))), toDate({fecha-nac}, 'yyyy-MM-dd'),\r",
+				"    iif(\r",
+				"        not(isNull(toDate({fecha-nac}, 'dd/MM/yyyy'))), toDate({fecha-nac}, 'dd/MM/yyyy'),\r",
+				"        iif(\r",
+				"            not(isNull(toDate({fecha-nac}, 'dd-MM-yyyy'))), toDate({fecha-nac}, 'dd-MM-yyyy'),\r",
+				"            toDate(\r",
+				"                replace(replace(lower({fecha-nac}), 'mar', '03'), 'ene', '01'), \r",
+				"                'd/MM/yyyy'\r",
+				"            )\r",
+				"        )\r",
+				"    )\r",
+				")) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID_CLIENTE as integer,",
+				"          CI_NIT as integer,",
+				"          NOMBRE as string,",
+				"          FECHA_NAC as date,",
+				"          GENERO as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID_CLIENTE = id_cliente,",
+				"          CI_NIT = {ci-nit},",
+				"          NOMBRE = nombre,",
+				"          FECHA_NAC = {fecha-nac},",
+				"          GENERO = genero",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
