@@ -1,0 +1,40 @@
+{
+	"name": "productos_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sa_db_ventas",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "productos.csv",
+				"fileSystem": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id_producto",
+				"type": "String"
+			},
+			{
+				"name": "producto",
+				"type": "String"
+			},
+			{
+				"name": "precio",
+				"type": "String"
+			},
+			{
+				"name": "stock",
+				"type": "String"
+			}
+		]
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"name": "productos_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_db_ventas",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID_PRODUCTO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PRODUCTO",
+				"type": "varchar"
+			},
+			{
+				"name": "PRECIO",
+				"type": "decimal",
+				"precision": 3,
+				"scale": 2
+			},
+			{
+				"name": "STOCK",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "PRODUCTOS"
+		}
+	}
+}

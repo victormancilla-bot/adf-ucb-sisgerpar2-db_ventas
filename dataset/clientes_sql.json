@@ -1,0 +1,39 @@
+{
+	"name": "clientes_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_db_ventas",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID_CLIENTE",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CI_NIT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "NOMBRE",
+				"type": "varchar"
+			},
+			{
+				"name": "FECHA_NAC",
+				"type": "date"
+			},
+			{
+				"name": "GENERO",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CLIENTES"
+		}
+	}
+}
